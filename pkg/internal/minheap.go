@@ -1,4 +1,4 @@
-package internel
+package internal
 
 
 type HeapItem struct {

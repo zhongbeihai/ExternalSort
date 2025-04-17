@@ -1,4 +1,4 @@
-package internel
+package internal
 
 import (
 	"bufio"
@@ -13,6 +13,16 @@ type ChunkProcessor struct {
 	temFileDir    string
 	maxChunkLines int
 }
+
+func NewChunkProcessor(inputFile, temFileDir string, maxChunkLines int) *ChunkProcessor {
+    return &ChunkProcessor{
+        inputFile:     inputFile,
+        temFileDir:    temFileDir,
+        maxChunkLines: maxChunkLines,
+    }
+}
+
+
 
 func (cp *ChunkProcessor) ProcessChunk() ([]string, error) {
 	file, err := os.Open(cp.inputFile)
