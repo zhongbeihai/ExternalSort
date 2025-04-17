@@ -1,7 +1,7 @@
 package pkg
 
 import (
-	"externalsort/pkg/internal"
+	"externalsort/internal"
 	"os"
 )
 
