@@ -7,16 +7,16 @@ import (
 )
 
 type Merger struct {
-	tempFiles  []string
-	outputFile string
+	TempFiles  []string
+	OutputFile string
 }
 
 func (m *Merger) Merge() error {
 	// assign a Reader to every tempFile
-	readers := make([]*bufio.Scanner, len(m.tempFiles))
-	files := make([]*os.File, len(m.tempFiles))
+	readers := make([]*bufio.Scanner, len(m.TempFiles))
+	files := make([]*os.File, len(m.TempFiles))
 
-	for i, temFile := range m.tempFiles{
+	for i, temFile := range m.TempFiles{
 		file, err := os.Open(temFile)
 		if err != nil{
 			return err
@@ -41,7 +41,7 @@ func (m *Merger) Merge() error {
 		}
 	}
 
-	output, err := os.Create(m.outputFile)
+	output, err := os.Create(m.OutputFile)
 	if  err != nil {
 		return err
 	}

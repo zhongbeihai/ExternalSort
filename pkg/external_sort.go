@@ -1,25 +1,44 @@
 package pkg
 
-import(
+import (
 	"externalsort/pkg/internal"
+	"os"
 )
 
 // =======================
-// controller 
+// controller
 // =======================
 
-type ExternelSort struct{
-	inputFile string
-	outputFile string
-	temFileDir string
-	maxChunkLines int
+type ExternalSort struct{
+	InputFile string
+	OutputFile string
+	TemFileDir string
+	MaxChunkLines int
 }
 
-func (es *ExternelSort) Sort() error{
+func (es *ExternalSort) Sort() error{
 	chunkProcesssor := &internal.ChunkProcessor{
-		inputFile: es.inputFile,
-		temFileDir: es.temFileDir,
-		maxChunkLines: es.maxChunkLines,
+		InputFile: es.InputFile,
+		TemFileDir: es.TemFileDir,
+		MaxChunkLines: es.MaxChunkLines,
+	}
+
+	temFiles, err := chunkProcesssor.ProcessChunk()
+	if err != nil {
+		return err
+	}
+
+	merger := &internal.Merger{
+		TempFiles: temFiles,
+		OutputFile: es.OutputFile,
+	}
+	err = merger.Merge()
+	if err != nil {
+		return err
+	}
+
+	for _, file := range temFiles {
+		os.Remove(file)
 	}
 
 	return nil

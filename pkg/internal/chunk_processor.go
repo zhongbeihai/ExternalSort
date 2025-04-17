@@ -9,23 +9,15 @@ import (
 )
 
 type ChunkProcessor struct {
-	inputFile     string
-	temFileDir    string
-	maxChunkLines int
-}
-
-func NewChunkProcessor(inputFile, temFileDir string, maxChunkLines int) *ChunkProcessor {
-    return &ChunkProcessor{
-        inputFile:     inputFile,
-        temFileDir:    temFileDir,
-        maxChunkLines: maxChunkLines,
-    }
+	InputFile     string
+	TemFileDir    string
+	MaxChunkLines int
 }
 
 
 
 func (cp *ChunkProcessor) ProcessChunk() ([]string, error) {
-	file, err := os.Open(cp.inputFile)
+	file, err := os.Open(cp.InputFile)
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +32,7 @@ func (cp *ChunkProcessor) ProcessChunk() ([]string, error) {
 		chunk = append(chunk, scanner.Text())
 
 		// when the size of chunk reaches upper limits, write the chunk to temporary file
-		if len(chunk) >= cp.maxChunkLines {
+		if len(chunk) >= cp.MaxChunkLines {
 			temfile, err := cp.WriteToTemFiles(chunk, chunkIndex)
 			if err != nil {
 				return nil, err
@@ -67,7 +59,7 @@ func (cp *ChunkProcessor) ProcessChunk() ([]string, error) {
 func (cp *ChunkProcessor) WriteToTemFiles(chunk []string, index int) (string, error) {
 	sort.Strings(chunk)
 
-	tempfileName := filepath.Join(cp.temFileDir, fmt.Sprintf("chunk-%d.tmp", index))
+	tempfileName := filepath.Join(cp.TemFileDir, fmt.Sprintf("chunk-%d.tmp", index))
 	file, err := os.Create(tempfileName)
 	if err != nil{
 		return "", err
