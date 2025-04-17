@@ -19,7 +19,7 @@ func TestExternelSort_Sort(t *testing.T) {
 
 	err := sorter.Sort()
 	if err != nil {
-		fmt.Println("Error:", err)
+		fmt.Println("Error:", err.Error())
 	} else {
 		fmt.Println("Sorting completed successfully!")
 	}

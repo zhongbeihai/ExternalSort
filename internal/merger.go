@@ -1,5 +1,6 @@
 package internal
 
+
 import (
 	"bufio"
 	"container/heap"
