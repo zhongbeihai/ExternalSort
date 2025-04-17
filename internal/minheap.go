@@ -2,7 +2,7 @@ package internal
 
 
 type HeapItem struct {
-	value     string
+	value     int
 	fileIndex int
 }
 

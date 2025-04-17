@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
 )
 
 type ChunkProcessor struct {
@@ -25,11 +26,16 @@ func (cp *ChunkProcessor) ProcessChunk() ([]string, error) {
 
 	scanner := bufio.NewScanner(file)
 	var tempfilesList []string
-	var chunk []string
+	var chunk []int
 	chunkIndex := 0
 
 	for scanner.Scan() {
-		chunk = append(chunk, scanner.Text())
+		text := scanner.Text()
+		val, err := strconv.Atoi(text)
+		if err != nil {
+			return nil, err
+		}
+		chunk = append(chunk, val)
 
 		// when the size of chunk reaches upper limits, write the chunk to temporary file
 		if len(chunk) >= cp.MaxChunkLines {
@@ -56,8 +62,8 @@ func (cp *ChunkProcessor) ProcessChunk() ([]string, error) {
 	return tempfilesList, err
 }
 
-func (cp *ChunkProcessor) WriteToTemFiles(chunk []string, index int) (string, error) {
-	sort.Strings(chunk)
+func (cp *ChunkProcessor) WriteToTemFiles(chunk []int, index int) (string, error) {
+	sort.Ints(chunk)
 
 	tempfileName := filepath.Join(cp.TemFileDir, fmt.Sprintf("chunk-%d.tmp", index))
 	file, err := os.Create(tempfileName)
@@ -68,7 +74,8 @@ func (cp *ChunkProcessor) WriteToTemFiles(chunk []string, index int) (string, er
 
 	writer := bufio.NewWriter(file)
 	for _, line := range chunk{
-		_, err := writer.WriteString(line + "\n")
+		val := strconv.Itoa(line)
+		_, err := writer.WriteString(val + "\n")
 		if err != nil{
 			return "", err
 		}

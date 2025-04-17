@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-    filename := "large_input.txt"
-    totalLines := 1_000_000_00         // 想生成多少行
+    filename := "large_input_1.txt"
+    totalLines := 1_000_000      // 想生成多少行
     minValue := 1                     // 最小值（含）
     maxValue := 1_000_000             // 最大值（含）
 

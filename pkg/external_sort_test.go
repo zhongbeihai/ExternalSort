@@ -11,10 +11,10 @@ func TestExternelSort_Sort(t *testing.T) {
 	os.MkdirAll(tempDir, os.ModePerm)
 
 	sorter := &ExternalSort{
-		InputFile:     "large_input.txt",
+		InputFile:     "..\\utils\\large_input_1.txt",
 		OutputFile:    "sorted_output.txt",
 		TemFileDir:     tempDir,
-		MaxChunkLines: 100000, // 每个块 10 万行（你可以根据内存调整）
+		MaxChunkLines: 1000, // 
 	}
 
 	err := sorter.Sort()

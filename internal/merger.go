@@ -1,10 +1,10 @@
 package internal
 
-
 import (
 	"bufio"
 	"container/heap"
 	"os"
+	"strconv"
 )
 
 type Merger struct {
@@ -38,7 +38,12 @@ func (m *Merger) Merge() error {
 
 	for i, reader := range readers{
 		if reader.Scan(){
-			heap.Push(h, HeapItem{value: reader.Text(), fileIndex: i})
+			text := reader.Text()
+			val, err := strconv.Atoi(text)
+			if err != nil {
+				return err
+			}
+			heap.Push(h, HeapItem{value: val, fileIndex: i})
 		}
 	}
 
@@ -53,13 +58,18 @@ func (m *Merger) Merge() error {
 	for h.Len() > 0{
 		item := heap.Pop(h).(HeapItem)
 
-		_, err := writer.WriteString(item.value + "\n")
+		_, err := writer.WriteString(strconv.Itoa(item.value) + "\n")
 		if err != nil {
 			return err
 		}
 
 		if readers[item.fileIndex].Scan() {
-			heap.Push(h, HeapItem{value: readers[item.fileIndex].Text(), fileIndex: item.fileIndex})
+			text := readers[item.fileIndex].Text()
+			val, err := strconv.Atoi(text)
+			if err != nil {
+				return err
+			}
+			heap.Push(h, HeapItem{value: val, fileIndex: item.fileIndex})
 		}
 	}
 
